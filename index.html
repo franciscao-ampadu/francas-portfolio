@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>My Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#B5532E;--grid:rgba(255,255,255,.08);--accent:#9A3E1E;--pink:#FFD9B8;--ink:#1d1418;--menu:rgba(70,25,10,.72);--mi:#FFEFE2;--hp:#F7D9C4;--hh:#FFF3E6;--lh:#FFD9A8;--il:#FFF3E6;--ih:#FFEFE2;--iht:#9A3E1E;--f1:#F3D3B0;--f2:#FAE8D0;--note:#FBEFC4;--bar:#F6E6D9;--p1:#F3D3B0;--p2:#C46A44;--dock:rgba(255,240,228,.2)}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden;font:13px Inter,system-ui,sans-serif;color:var(--ink);background:var(--bg)}
+body{background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:26px 26px}
+#menu{position:fixed;top:0;left:0;right:0;height:26px;background:var(--menu);color:var(--mi);backdrop-filter:blur(8px);display:flex;align-items:center;gap:18px;padding:0 14px;z-index:9999;font-size:12.5px}
+#menu b{font-weight:600;border-bottom:1.5px solid currentColor;cursor:pointer}
+#menu a{cursor:pointer}#menu #clock{margin-left:auto}
+#hero{position:absolute;inset:0;display:grid;place-content:center;text-align:center;pointer-events:none}
+#hero p{margin:0 0 6px;font-size:18px;color:var(--hp)}
+#hero h1{margin:0;font:italic 400 clamp(64px,13vw,160px)/1.05 'Instrument Serif',Georgia,serif;letter-spacing:-.02em;color:var(--hh);pointer-events:auto}
+.l{transition:color 1.4s}.l:hover{color:var(--lh);transition:color .1s}
+.ic{position:absolute;width:96px;text-align:center;cursor:pointer;user-select:none;touch-action:none;color:var(--il)}
+.ic svg{width:54px;height:46px;pointer-events:none}
+.ic span{display:inline-block;margin-top:4px;padding:1px 5px;border-radius:4px;font-size:11px;font-weight:500;line-height:1.25}
+.ic:hover span{background:var(--ih);color:var(--iht)}
+.f1{fill:var(--f1)}.f2{fill:var(--f2)}
+.note{position:absolute;left:20px;top:44px;width:230px;padding:14px 16px 18px;background:var(--note);color:#1d1418;box-shadow:0 6px 16px rgba(0,0,0,.18);transform:rotate(-1.5deg);cursor:grab;touch-action:none;user-select:none;line-height:1.7}
+.note b{display:block;margin-bottom:4px}.note s{opacity:.55}
+.win{position:absolute;background:#fff;color:#1d1418;border-radius:12px;box-shadow:0 20px 60px rgba(60,10,20,.3),0 0 0 1px rgba(0,0,0,.08);overflow:hidden;animation:pop .18s ease-out}
+@keyframes pop{from{transform:scale(.94);opacity:0}}
+.bar{height:34px;display:flex;align-items:center;justify-content:center;position:relative;background:var(--bar);cursor:grab;font-weight:600;font-size:12px;touch-action:none;user-select:none}
+.dots{position:absolute;left:12px;display:flex;gap:7px}
+.dots i{width:12px;height:12px;border-radius:50%;background:#ff5f57;cursor:pointer}
+.dots i+i{background:#febc2e}.dots i+i+i{background:#28c840}
+.body{max-height:calc(100vh - 170px);overflow:auto;line-height:1.65}
+.pad{padding:28px 32px 34px}.pad p{margin:0 0 12px}
+.tag{color:var(--accent);font-weight:600;letter-spacing:.12em;font-size:10.5px}
+h2{font-size:32px;margin:6px 0 12px;letter-spacing:-.01em;line-height:1.15}
+.gal{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:18px}
+.gal img,.ph{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:8px;background:linear-gradient(135deg,var(--p1),var(--p2));display:grid;place-content:center;color:#fff;font-size:12px}
+.mono{font-family:ui-monospace,Menlo,monospace;font-size:12.5px}
+.row{display:flex;gap:16px;align-items:baseline}.row small{width:80px;letter-spacing:.1em;text-transform:uppercase;color:#777;font-size:10px}
+.row a{color:var(--accent)}
+.btn{display:inline-block;margin-top:8px;padding:8px 16px;border-radius:8px;background:#1d1418;color:#fff;text-decoration:none;font-weight:500}
+#dock{position:fixed;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:12px;padding:9px 12px;background:var(--dock);backdrop-filter:blur(12px);border-radius:20px;box-shadow:0 8px 30px rgba(60,10,20,.25);z-index:9998}
+#dock button{width:42px;height:42px;border:0;border-radius:12px;font-size:17px;color:#fff;cursor:pointer;transition:transform .15s;position:relative}
+#dock button:hover{transform:translateY(-8px) scale(1.2)}
+#dock [data-tip]::before{content:attr(data-tip);position:absolute;bottom:56px;left:50%;transform:translateX(-50%);background:#fff;color:#333;padding:2px 8px;border-radius:8px;font-size:11px;box-shadow:0 2px 8px rgba(0,0,0,.15);white-space:nowrap}
+.sp{position:fixed;pointer-events:none;color:var(--pink);font-size:12px;animation:sp .9s forwards;z-index:99999}
+@keyframes sp{to{opacity:0;transform:translateY(14px) scale(.3) rotate(90deg)}}
+@media(max-width:700px){.ic{width:80px}.note{width:180px;font-size:11px}.win{left:4vw!important;width:92vw!important;top:44px!important}}
+</style>
+</head>
+<body>
+<div id="menu"><span>✦</span><b id="home"></b><a id="mc">Contact</a><a id="mr">Resume</a><span id="clock"></span></div>
+<div id="hero"><p>welcome to my</p><h1 id="title"></h1></div>
+<div id="dock"></div>
+<script>
+/* ============ EDIT YOUR CONTENT HERE ============ */
+const C={
+  name:"Francisca Obenewaa Ampadu",
+  email:"franciscao.ampadu@gmail.com",
+  links:[["GitHub","https://github.com/yourusername","@yourusername"],["LinkedIn","https://linkedin.com/in/yourname","Your Name"]],
+  todo:[["Design something people love",0],["Learn a new robotics framework",1],["Ship a project every term",0],["Drink water",1],["Build my dream portfolio ✿",0]],
+  about:"Write a short intro here: who you are, what you study, what you love building, and what you’re looking for next.",
+  kind:[["Add a lovely thing a friend or teacher said about you.","Someone kind"],["Add another one!","Someone else"]],
+  trash:"There’s nothing in here except a secret: you’re doing great. Replace this with your own joke.",
+  projects:[
+    {id:"p1",title:"Project 01 (Drone Behavior Tree)",tag:"ROBOTICS · BEHAVIOR TREES",heading:"Drone Behavior Tree",text:"Describe the project: the problem, your approach, the tools you used, and what you learned.",images:[]},
+    {id:"p2",title:"Project 02 (Firetruck Simulation)",tag:"DISTRIBUTED SYSTEMS · GO",heading:"Firetruck Simulation",text:"Describe the project here.",images:[]},
+    {id:"p3",title:"Project 03 (Sensor Pipeline)",tag:"SOFTWARE ARCHITECTURE · PYTHON",heading:"Sensor Pipeline",text:"Describe the project here.",images:[]},
+    {id:"p4",title:"Project 04 (Add yours)",tag:"CATEGORY · TOOLS",heading:"Project title",text:"Describe the project here.",images:[]},
+    {id:"p5",title:"Project 05 (Add yours)",tag:"CATEGORY · TOOLS",heading:"Project title",text:"Describe the project here.",images:[]},
+    {id:"p6",title:"Project 06 (Add yours)",tag:"CATEGORY · TOOLS",heading:"Project title",text:"Describe the project here. To add pictures, put them in an images folder and list them like: images:[\"images/pic1.jpg\"]",images:[]}
+  ]
+};
+/* ============ END OF EDIT AREA ============ */
+
+const $=(s,p=document)=>p.querySelector(s);
+let z=10;
+const F='<svg viewBox="0 0 54 46"><path class="f1" d="M3 8a4 4 0 0 1 4-4h14l5 5h21a4 4 0 0 1 4 4v27a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4z"/><path class="f2" d="M3 16h48v23a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4z"/></svg>';
+const D=t=>`<svg viewBox="0 0 54 46"><path d="M14 3h18l9 9v31H14z" fill="#fff" stroke="#ddd"/><text x="27" y="30" font-size="8" fill="#9A3E1E" text-anchor="middle" font-weight="700">${t}</text></svg>`;
+const T='<svg viewBox="0 0 54 46"><rect x="13" y="8" width="28" height="4" rx="2" fill="#b8bdc4"/><path d="M16 12h22l-2 31H18z" fill="#cfd3d8"/></svg>';
+const SVG={folder:F,pdf:D("PDF"),txt:D("TXT"),trash:T};
+const ICONS=[["p1","folder",78,20],["p2","folder",86,30],["p3","folder",73,38],["p4","folder",85,50],["p5","folder",65,60],["p6","folder",79,64],["about","folder",16,56],["resume","pdf",6,42],["kind","txt",26,68],["trash","trash",90,76]];
+const LABEL={about:"About Me",resume:"Resume.pdf",kind:"Kind words.txt",trash:"Don’t Look"};
+C.projects.forEach(p=>LABEL[p.id]=p.title);
+
+function drag(el,h,tap){
+  h.addEventListener("pointerdown",e=>{
+    if(e.target.closest(".dots"))return;
+    el.style.zIndex=++z;
+    const r=el.getBoundingClientRect(),sx=e.clientX,sy=e.clientY;let moved=0;
+    const mv=v=>{const dx=v.clientX-sx,dy=v.clientY-sy;if(Math.abs(dx)+Math.abs(dy)>5)moved=1;if(moved){el.style.left=r.left+dx+"px";el.style.top=Math.max(28,r.top+dy)+"px"}};
+    const up=()=>{removeEventListener("pointermove",mv);removeEventListener("pointerup",up);if(!moved&&tap)tap()};
+    addEventListener("pointermove",mv);addEventListener("pointerup",up);
+  });
+}
+function win(id,title,html,w=720){
+  let el=$("#w-"+id);
+  if(el){el.style.zIndex=++z;return}
+  el=document.createElement("div");el.className="win";el.id="w-"+id;
+  const W=Math.min(w,innerWidth*.92),n=document.querySelectorAll(".win").length;
+  el.style.cssText=`width:${W}px;left:${Math.max(8,(innerWidth-W)/2+n*28-40)}px;top:${50+n*24}px;z-index:${++z}`;
+  el.innerHTML=`<div class="bar"><span class="dots"><i></i><i></i><i></i></span>${title}</div><div class="body">${html}</div>`;
+  document.body.append(el);
+  el.querySelectorAll(".dots i").forEach(i=>i.onclick=()=>el.remove());
+  drag(el,$(".bar",el));
+}
+function action(id){
+  if(id==="resume")return window.open("resume.pdf","_blank");
+  if(id==="about")return win(id,"About Me",`<div class="pad"><h2>Hi, I’m ${C.name}.</h2><p>${C.about}</p></div>`,560);
+  if(id==="kind")return win(id,"Kind words.txt",`<div class="pad mono">${C.kind.map(k=>`<p>“${k[0]}”<br>— ${k[1]}</p>`).join("")}</div>`,480);
+  if(id==="trash")return win(id,"Don’t Look",`<div class="pad"><h2>I said don’t look.</h2><p>${C.trash}</p></div>`,420);
+  if(id==="contact")return win(id,"New Message",`<div class="pad"><p><b>To:</b> ${C.name}<br><b>Subject:</b> Let’s make something lovely</p><hr style="border:0;border-top:1px solid #eee;margin:12px 0"><p class="row"><small>Email</small><a href="mailto:${C.email}">${C.email}</a></p>${C.links.map(l=>`<p class="row"><small>${l[0]}</small><a href="${l[1]}" target="_blank" rel="noopener">${l[2]}</a></p>`).join("")}<a class="btn" href="mailto:${C.email}">Email me</a></div>`,480);
+  const p=C.projects.find(p=>p.id===id);
+  if(p){
+    const imgs=p.images.length?p.images.map(s=>`<img src="${s}" alt="">`).join(""):'<div class="ph">add image</div><div class="ph">add image</div><div class="ph">add image</div>';
+    win(id,p.title,`<div class="pad"><span class="tag">${p.tag}</span><h2>${p.heading}</h2><p>${p.text}</p><div class="gal">${imgs}</div></div>`);
+  }
+}
+$("#title").innerHTML=[..."portfolio."].map(c=>`<span class="l">${c}</span>`).join("");
+$("#home").textContent=C.name+"’s Portfolio";
+$("#home").onclick=()=>document.querySelectorAll(".win").forEach(w=>w.remove());
+$("#mc").onclick=()=>action("contact");$("#mr").onclick=()=>action("resume");
+
+const note=document.createElement("div");note.className="note";
+note.innerHTML="<b>To do:</b>"+C.todo.map(t=>t[1]?`<s>${t[0]}</s>`:t[0]).join("<br>");
+document.body.append(note);drag(note,note);
+
+ICONS.forEach(([id,type,x,y])=>{
+  const d=document.createElement("div");d.className="ic";d.style.left=x+"%";d.style.top=y+"%";
+  d.innerHTML=SVG[type]+"<br><span>"+LABEL[id]+"</span>";
+  document.body.append(d);drag(d,d,()=>action(id));
+});
+
+[["#FFF0E2","☺","about","#9A3E1E"],["#F8DCC4","▢","p1","#9A3E1E"],["#F3C7A3","✿","p2","#9A3E1E"],["#E9AE86","❝","kind","#7A2E14"],["#D98A5F","✉","contact","#fff"],["#fff","PDF","resume","#9A3E1E"],["#4A1D0C","♡","heart","#FFD9B8"]].forEach(([bg,g,a,fg])=>{
+  const b=document.createElement("button");b.style.background=bg;b.textContent=g;b.style.color=fg||"#fff";
+  if(g==="PDF"){b.style.fontSize="12px";b.style.fontWeight="700"}
+  if(a==="heart")b.dataset.tip="open me";
+  b.onclick=e=>{if(a==="heart"){const r=b.getBoundingClientRect();for(let i=0;i<20;i++)spark(r.left+r.width/2+(Math.random()-.5)*90,r.top-Math.random()*90,"♡")}else action(a)};
+  $("#dock").append(b);
+});
+
+function spark(x,y,t="✦"){const s=document.createElement("span");s.className="sp";s.textContent=t;s.style.left=x+"px";s.style.top=y+"px";document.body.append(s);s.onanimationend=()=>s.remove()}
+let last=0;
+addEventListener("pointermove",e=>{if(e.pointerType==="mouse"&&Date.now()-last>40){last=Date.now();spark(e.clientX+(Math.random()-.5)*10,e.clientY+(Math.random()-.5)*10)}});
+const tick=()=>{const d=new Date();$("#clock").textContent=d.toLocaleDateString("en-GB",{weekday:"short",day:"numeric",month:"short"})+", "+d.toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit"})};
+tick();setInterval(tick,3e4);
+</script>
+</body>
+</html>
